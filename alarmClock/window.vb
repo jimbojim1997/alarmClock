@@ -4,7 +4,7 @@ Imports System.Runtime.Serialization.Formatters.Binary
 Public Class window
     Private alarms As New List(Of Alarm)
     Private alarmThread As Thread
-    Private Const alarmFileName As String = "alarms.dat"
+    Private ReadOnly alarmFileName As String = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "alarmClock", "alarms.dat")
 
     Private Sub addAlarm(alarm As Alarm)
         alarms.Add(alarm)
@@ -108,6 +108,10 @@ Public Class window
     End Sub
 
     Private Sub saveAlarms()
+        If Not File.Exists(alarmFileName) Then
+            Directory.CreateDirectory(Path.GetDirectoryName(alarmFileName))
+        End If
+
         Dim fs = New FileStream(alarmFileName, FileMode.Create)
         Dim bf = New BinaryFormatter()
         bf.Serialize(fs, alarms)
@@ -260,5 +264,9 @@ Public Class window
         Me.Hide()
         tHide.Enabled = False
         Me.Opacity = 1
+    End Sub
+
+    Private Sub niTray_DoubleClick(sender As Object, e As EventArgs) Handles niTray.DoubleClick
+        Me.Show()
     End Sub
 End Class

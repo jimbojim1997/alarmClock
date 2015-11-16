@@ -52,6 +52,7 @@ Partial Class window
         Me.cbAlarmDayThur = New System.Windows.Forms.CheckBox()
         Me.cbAlarmDayTue = New System.Windows.Forms.CheckBox()
         Me.cbAlarmDayWed = New System.Windows.Forms.CheckBox()
+        Me.tHide = New System.Windows.Forms.Timer(Me.components)
         Me.cmsTray.SuspendLayout()
         Me.msTop.SuspendLayout()
         CType(Me.numAlarmHour, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -302,6 +303,11 @@ Partial Class window
         Me.cbAlarmDayWed.Text = "Wednesday"
         Me.cbAlarmDayWed.UseVisualStyleBackColor = True
         '
+        'tHide
+        '
+        Me.tHide.Enabled = True
+        Me.tHide.Interval = 1
+        '
         'window
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -367,4 +373,5 @@ Partial Class window
     Friend WithEvents cbAlarmDayThur As CheckBox
     Friend WithEvents cbAlarmDayTue As CheckBox
     Friend WithEvents cbAlarmDayWed As CheckBox
+    Friend WithEvents tHide As Timer
 End Class

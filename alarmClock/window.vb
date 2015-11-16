@@ -132,6 +132,7 @@ Public Class window
         loadAlarms()
         alarmThread = New Thread(AddressOf checkAlarms)
         alarmThread.Start()
+        Me.Opacity = 0
     End Sub
 
     Private Sub btnNewAlarm_Click(sender As Object, e As EventArgs) Handles btnNewAlarm.Click
@@ -202,10 +203,6 @@ Public Class window
         saveAlarms()
     End Sub
 
-    Private Sub ExitToolStripMenuItem1_Click(sender As Object, e As EventArgs) Handles btnTopExit.Click
-
-    End Sub
-
     Private Sub window_FormClosing(sender As Object, e As FormClosingEventArgs) Handles MyBase.FormClosing
         If e.CloseReason = CloseReason.UserClosing Then
             e.Cancel = True
@@ -257,5 +254,11 @@ Public Class window
         Dim alarm As Alarm = getAlarmByName(name)
         alarm.setActive(e.NewValue)
         saveAlarms()
+    End Sub
+
+    Private Sub tHide_Tick(sender As Object, e As EventArgs) Handles tHide.Tick
+        Me.Hide()
+        tHide.Enabled = False
+        Me.Opacity = 1
     End Sub
 End Class

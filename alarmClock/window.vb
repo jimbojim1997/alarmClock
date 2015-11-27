@@ -142,6 +142,8 @@ Public Class window
     Private Sub clearAlarmInputFields()
         tbAlarmName.Clear()
         tbAlarmText.Clear()
+        numAlarmHour.Value = 0
+        numAlarmMin.Value = 0
         cbAlarmDayMon.Checked = False
         cbAlarmDayTue.Checked = False
         cbAlarmDayWed.Checked = False
@@ -190,18 +192,17 @@ Public Class window
         Else
             Dim alarm As Alarm = getAlarmInputFields()
             addAlarm(alarm)
-            clearAlarmInputFields()
         End If
 
         saveAlarms()
     End Sub
 
     Private Sub btnUpdateAlarm_Click(sender As Object, e As EventArgs) Handles btnUpdateAlarm.Click
+        Dim name As String = tbAlarmName.Text
         If alarmExists(Name) Then
             Dim alarm As Alarm = getAlarmInputFields()
             alarm.setActive(getAlarmByName(alarm.getName()).isActive())
-            editAlarm(Alarm)
-            clearAlarmInputFields()
+            editAlarm(alarm)
         Else
             MessageBox.Show("An alarm of that name doesn't exist.")
         End If
@@ -280,5 +281,9 @@ Public Class window
     Private Sub niTray_DoubleClick(sender As Object, e As EventArgs) Handles niTray.DoubleClick
         loadAlarms()
         Me.Show()
+    End Sub
+
+    Private Sub btnClear_Click(sender As Object, e As EventArgs) Handles btnClear.Click
+        clearAlarmInputFields()
     End Sub
 End Class

@@ -53,6 +53,7 @@ Partial Class window
         Me.cbAlarmDayTue = New System.Windows.Forms.CheckBox()
         Me.cbAlarmDayWed = New System.Windows.Forms.CheckBox()
         Me.tHide = New System.Windows.Forms.Timer(Me.components)
+        Me.btnClear = New System.Windows.Forms.Button()
         Me.cmsTray.SuspendLayout()
         Me.msTop.SuspendLayout()
         CType(Me.numAlarmHour, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -71,23 +72,23 @@ Partial Class window
         '
         Me.cmsTray.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ShowToolStripMenuItem, Me.ToolStripSeparator1, Me.ExitToolStripMenuItem})
         Me.cmsTray.Name = "cmsTray"
-        Me.cmsTray.Size = New System.Drawing.Size(153, 76)
+        Me.cmsTray.Size = New System.Drawing.Size(134, 54)
         '
         'ShowToolStripMenuItem
         '
         Me.ShowToolStripMenuItem.Name = "ShowToolStripMenuItem"
-        Me.ShowToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
+        Me.ShowToolStripMenuItem.Size = New System.Drawing.Size(133, 22)
         Me.ShowToolStripMenuItem.Text = "Show/Hide"
         '
         'ToolStripSeparator1
         '
         Me.ToolStripSeparator1.Name = "ToolStripSeparator1"
-        Me.ToolStripSeparator1.Size = New System.Drawing.Size(149, 6)
+        Me.ToolStripSeparator1.Size = New System.Drawing.Size(130, 6)
         '
         'ExitToolStripMenuItem
         '
         Me.ExitToolStripMenuItem.Name = "ExitToolStripMenuItem"
-        Me.ExitToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
+        Me.ExitToolStripMenuItem.Size = New System.Drawing.Size(133, 22)
         Me.ExitToolStripMenuItem.Text = "Exit"
         '
         'clbAlarms
@@ -308,11 +309,21 @@ Partial Class window
         Me.tHide.Enabled = True
         Me.tHide.Interval = 1
         '
+        'btnClear
+        '
+        Me.btnClear.Location = New System.Drawing.Point(294, 149)
+        Me.btnClear.Name = "btnClear"
+        Me.btnClear.Size = New System.Drawing.Size(69, 23)
+        Me.btnClear.TabIndex = 17
+        Me.btnClear.Text = "Clear"
+        Me.btnClear.UseVisualStyleBackColor = True
+        '
         'window
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(365, 347)
+        Me.Controls.Add(Me.btnClear)
         Me.Controls.Add(Me.pnlDays)
         Me.Controls.Add(Me.numAlarmHour)
         Me.Controls.Add(Me.numAlarmMin)
@@ -374,4 +385,5 @@ Partial Class window
     Friend WithEvents cbAlarmDayTue As CheckBox
     Friend WithEvents cbAlarmDayWed As CheckBox
     Friend WithEvents tHide As Timer
+    Friend WithEvents btnClear As Button
 End Class

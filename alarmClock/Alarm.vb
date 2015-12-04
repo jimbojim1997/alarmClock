@@ -5,13 +5,15 @@ Public Class Alarm
     Private time As Time
     '                             0Sun   1Mon   2Tue   3Wed   4Thur  5Fri   6Sat    Who starts on a sunday?
     Private days = New Boolean() {False, False, False, False, False, False, False}
+    Private sound As String
     Private active As Boolean
     Private baloonVisible As Boolean = False
 
-    Public Sub New(name As String, text As String, time As Time, days As Boolean(), active As Boolean)
+    Public Sub New(name As String, text As String, time As Time, sound As String, days As Boolean(), active As Boolean)
         Me.name = name
         Me.text = text
         Me.time = time
+        Me.sound = sound
         Me.days = days
         Me.active = active
     End Sub
@@ -57,6 +59,13 @@ Public Class Alarm
         Next
 
         Return isSet
+    End Function
+
+    Public Sub setSound(sound As String)
+        Me.sound = sound
+    End Sub
+    Public Function getSound() As String
+        Return Me.sound
     End Function
 
     Public Sub setActive(active As Boolean)

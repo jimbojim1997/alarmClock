@@ -70,18 +70,25 @@ Public Class window
                         showTrayIconAlert(alarm.getName(),
                                       time.hour & ":" & time.minute & vbCrLf & alarm.getText(),
                                       10000) '10 sec
-                        playeAlarmSound("C:\Windows\Media\notify.wav")
+
+                        If File.Exists(alarm.getSound()) Then
+                            playAlarmSound(alarm.getSound())
+                        Else
+                            playAlarmSound("C:\Windows\Media\notify.wav")
+                        End If
+
+
                         alarm.setBaloonVisible(True)
 
-                        If Not alarm.daySet() Then
-                            alarm.setActive(False)
-                            Dim index As Integer = clbAlarms.Items.IndexOf(alarm.getName())
-                            setClbCheckedState(index, False)
-                            saveAlarms()
+                            If Not alarm.daySet() Then
+                                alarm.setActive(False)
+                                Dim index As Integer = clbAlarms.Items.IndexOf(alarm.getName())
+                                setClbCheckedState(index, False)
+                                saveAlarms()
+                            End If
                         End If
-                    End If
 
-                ElseIf alarm.isBaloonVisble()
+                    ElseIf alarm.isBaloonVisble()
                     alarm.setBaloonVisible(False)
                 End If
             Next
@@ -104,7 +111,7 @@ Public Class window
         niTray.ShowBalloonTip(time, title, text, ToolTipIcon.Info)
     End Sub
 
-    Private Sub playeAlarmSound(sound As String)
+    Private Sub playAlarmSound(sound As String)
         Dim player As New SoundPlayer(sound)
         player.Play()
     End Sub
@@ -121,6 +128,7 @@ Public Class window
         Dim text As String = tbAlarmText.Text
         Dim hour As Integer = numAlarmHour.Value
         Dim minute As Integer = numAlarmMin.Value
+        Dim sound As String = tbSound.Text
         Dim days = New Boolean() {cbAlarmDaySun.Checked,
                                   cbAlarmDayMon.Checked,
                                   cbAlarmDayTue.Checked,
@@ -133,6 +141,7 @@ Public Class window
         alarm = New Alarm(name,
                           text,
                           New Time(hour, minute),
+                          sound,
                           days,
                           active)
 
@@ -144,6 +153,7 @@ Public Class window
         tbAlarmText.Clear()
         numAlarmHour.Value = 0
         numAlarmMin.Value = 0
+        tbSound.Clear()
         cbAlarmDayMon.Checked = False
         cbAlarmDayTue.Checked = False
         cbAlarmDayWed.Checked = False
@@ -253,6 +263,7 @@ Public Class window
             tbAlarmText.Text = alarm.getText()
             numAlarmHour.Value = alarm.getTime().hour
             numAlarmMin.Value = alarm.getTime().minute
+            tbSound.Text = alarm.getSound()
 
             cbAlarmDaySun.Checked = alarm.getDays()(0)
             cbAlarmDayMon.Checked = alarm.getDays()(1)
@@ -285,5 +296,13 @@ Public Class window
 
     Private Sub btnClear_Click(sender As Object, e As EventArgs) Handles btnClear.Click
         clearAlarmInputFields()
+    End Sub
+
+    Private Sub btnSound_Click(sender As Object, e As EventArgs) Handles btnSound.Click
+        fdOpen.ShowDialog()
+    End Sub
+
+    Private Sub fdOpen_FileOk(sender As Object, e As System.ComponentModel.CancelEventArgs) Handles fdOpen.FileOk
+        tbSound.Text = fdOpen.FileName
     End Sub
 End Class

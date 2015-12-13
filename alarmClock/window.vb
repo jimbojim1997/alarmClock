@@ -36,7 +36,7 @@ Public Class window
     End Function
 
     Private Function getAlarmByName(name As String) As Alarm
-        Dim alarm As Alarm
+        Dim alarm As Alarm = Nothing
         For Each temp As Alarm In alarms
             If temp.getName() = name Then
                 alarm = temp
@@ -63,32 +63,28 @@ Public Class window
             For Each alarm As Alarm In tempAlarms
                 time = alarm.getTime()
 
-
                 If (alarm.getDays()(day) Or Not alarm.daySet()) And time.hour = hour And time.minute = min And alarm.isActive() Then
 
                     If Not alarm.isBaloonVisble() Then
-                        showTrayIconAlert(alarm.getName(),
-                                      time.hour & ":" & time.minute & vbCrLf & alarm.getText(),
-                                      10000) '10 sec
-
                         If File.Exists(alarm.getSound()) Then
                             playAlarmSound(alarm.getSound())
                         Else
                             playAlarmSound("C:\Windows\Media\notify.wav")
                         End If
 
+                        showTrayIconAlert(alarm.getName(), alarm.getText(), alarm.getTime(), 10000)
 
                         alarm.setBaloonVisible(True)
 
-                            If Not alarm.daySet() Then
-                                alarm.setActive(False)
-                                Dim index As Integer = clbAlarms.Items.IndexOf(alarm.getName())
-                                setClbCheckedState(index, False)
-                                saveAlarms()
-                            End If
+                        If Not alarm.daySet() Then
+                            alarm.setActive(False)
+                            Dim index As Integer = clbAlarms.Items.IndexOf(alarm.getName())
+                            setClbCheckedState(index, False)
+                            saveAlarms()
                         End If
+                    End If
 
-                    ElseIf alarm.isBaloonVisble()
+                ElseIf alarm.isBaloonVisble()
                     alarm.setBaloonVisible(False)
                 End If
             Next
@@ -107,8 +103,14 @@ Public Class window
         End If
     End Sub
 
-    Private Sub showTrayIconAlert(title As String, text As String, time As Integer)
-        niTray.ShowBalloonTip(time, title, text, ToolTipIcon.Info)
+    Private Delegate Sub showTrayIconAlertDelegate(title As String, text As String, time As Time, timeOut As Integer)
+    Private Sub showTrayIconAlert(title As String, text As String, time As Time, timeOut As Integer)
+        If Me.InvokeRequired Then
+            Dim del As New showTrayIconAlertDelegate(AddressOf showTrayIconAlert)
+            Me.Invoke(del, New Object() {title, text, time, timeOut})
+        Else
+            Dim alertWindow As New AlertWindow(title, text, time, timeOut)
+        End If
     End Sub
 
     Private Sub playAlarmSound(sound As String)
@@ -304,5 +306,12 @@ Public Class window
 
     Private Sub fdOpen_FileOk(sender As Object, e As System.ComponentModel.CancelEventArgs) Handles fdOpen.FileOk
         tbSound.Text = fdOpen.FileName
+    End Sub
+
+    Private Sub tbAlarmText_KeyPress(sender As Object, e As KeyPressEventArgs) Handles tbAlarmText.KeyPress
+        If e.KeyChar = Convert.ToChar(1) Then
+            tbAlarmText.SelectAll()
+            e.Handled = True
+        End If
     End Sub
 End Class

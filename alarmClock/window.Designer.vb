@@ -56,8 +56,8 @@ Partial Class window
         Me.btnClear = New System.Windows.Forms.Button()
         Me.lblSound = New System.Windows.Forms.Label()
         Me.btnSound = New System.Windows.Forms.Button()
-        Me.tbSound = New System.Windows.Forms.TextBox()
         Me.fdOpen = New System.Windows.Forms.OpenFileDialog()
+        Me.tbSound = New System.Windows.Forms.TextBox()
         Me.cmsTray.SuspendLayout()
         Me.msTop.SuspendLayout()
         CType(Me.numAlarmHour, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -181,6 +181,8 @@ Partial Class window
         '
         'tbAlarmText
         '
+        Me.tbAlarmText.AcceptsReturn = True
+        Me.tbAlarmText.AcceptsTab = True
         Me.tbAlarmText.Location = New System.Drawing.Point(205, 86)
         Me.tbAlarmText.Multiline = True
         Me.tbAlarmText.Name = "tbAlarmText"
@@ -335,25 +337,25 @@ Partial Class window
         'btnSound
         '
         Me.btnSound.Location = New System.Drawing.Point(309, 338)
-        Me.btnSound.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
+        Me.btnSound.Margin = New System.Windows.Forms.Padding(2)
         Me.btnSound.Name = "btnSound"
         Me.btnSound.Size = New System.Drawing.Size(50, 20)
         Me.btnSound.TabIndex = 19
         Me.btnSound.Text = "Open"
         Me.btnSound.UseVisualStyleBackColor = True
         '
+        'fdOpen
+        '
+        Me.fdOpen.Filter = "Wav Files (*.wav)|*.wav"
+        '
         'tbSound
         '
         Me.tbSound.Location = New System.Drawing.Point(209, 338)
-        Me.tbSound.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
+        Me.tbSound.Margin = New System.Windows.Forms.Padding(2)
         Me.tbSound.Name = "tbSound"
         Me.tbSound.ReadOnly = True
         Me.tbSound.Size = New System.Drawing.Size(97, 20)
         Me.tbSound.TabIndex = 20
-        '
-        'fdOpen
-        '
-        Me.fdOpen.Filter = "Wav Files (*.wav)|*.wav"
         '
         'window
         '
@@ -430,6 +432,6 @@ Partial Class window
     Friend WithEvents btnClear As Button
     Friend WithEvents lblSound As Label
     Friend WithEvents btnSound As Button
-    Friend WithEvents tbSound As TextBox
     Friend WithEvents fdOpen As OpenFileDialog
+    Friend WithEvents tbSound As TextBox
 End Class

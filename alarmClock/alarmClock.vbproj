@@ -113,6 +113,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Alarm.vb" />
+    <Compile Include="AlertWindow.Designer.vb">
+      <DependentUpon>AlertWindow.vb</DependentUpon>
+    </Compile>
+    <Compile Include="AlertWindow.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Time.vb" />
     <Compile Include="window.vb">
       <SubType>Form</SubType>
@@ -138,6 +144,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="AlertWindow.resx">
+      <DependentUpon>AlertWindow.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="window.resx">
       <DependentUpon>window.vb</DependentUpon>
     </EmbeddedResource>

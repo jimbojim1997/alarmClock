@@ -1,9 +1,9 @@
 ﻿Imports System.Threading
 Public Class AlertWindow
 
-    Private fadeThread As New Thread(AddressOf fade)
+    Private runnerThread As Thread
 
-    Public Sub New(name As String, text As String, time As Time, timeOut As Integer)
+    Public Sub New(name As String, text As String, time As Time, timeOut As Integer, fadeIn As Integer, fadeOut As Integer)
 
         ' This call is required by the designer.
         InitializeComponent()
@@ -12,12 +12,6 @@ Public Class AlertWindow
         lblName.Text = name
         lblTime.Text = time.ToString()
         tbText.Text = text
-        If timeOut > 2000 Then
-            tTimeOut.Interval = timeOut
-            tTimeOut.Start()
-        Else
-            startFade()
-        End If
 
         Me.Height = 30 + (tbText.Lines.Length * tbText.Font.Height)
 
@@ -27,6 +21,9 @@ Public Class AlertWindow
 
         tbText.DeselectAll()
         lblName.Focus()
+
+        runnerThread = New Thread(Sub() Me.runner(timeOut, fadeIn, fadeOut))
+        runnerThread.Start()
     End Sub
 
     Private Sub AlertWindow_Load(sender As Object, e As EventArgs) Handles MyBase.Load
@@ -34,31 +31,42 @@ Public Class AlertWindow
     End Sub
 
     Private Sub btnClose_Click(sender As Object, e As EventArgs) Handles btnClose.Click
-        If fadeThread.IsAlive Then fadeThread.Abort()
+        If runnerThread.IsAlive Then runnerThread.Abort()
         Me.Close()
     End Sub
 
-    Private Sub tTimeOut_Tick(sender As Object, e As EventArgs) Handles tTimeOut.Tick
-        tTimeOut.Stop()
-        startFade()
-    End Sub
-
-    Private Sub startFade()
-        fadeThread.Start()
-    End Sub
-
-    Private Sub fade()
+    Private Sub runner(timeOut As Integer, fadeIn As Integer, fadeOut As Integer)
+        'fade in
         While True
-            Dim newOpacity = Math.Max(0, Me.Opacity - 0.01)
+            Dim newOpacity = Math.Min(1, Me.Opacity + 0.01)
             setOpacity(newOpacity)
 
-            If Me.Opacity = 0 Then
+            If Me.Opacity >= 1 Then
                 Exit While
             End If
-            Thread.Sleep(20) 'fade over 2Seconds
+            If fadeIn > 0 Then
+                Thread.Sleep(fadeIn * 0.01)
+            End If
+        End While
+
+        'sleep
+        Thread.Sleep(timeOut)
+
+        'fade out
+        While True
+            Dim newOpacity = Math.Min(1, Me.Opacity - 0.01)
+            setOpacity(newOpacity)
+
+            If Me.Opacity <= 0 Then
+                Exit While
+            End If
+            If fadeOut > 0 Then
+                Thread.Sleep(fadeOut * 0.01)
+            End If
         End While
         closeForm()
     End Sub
+
 
     Private Delegate Sub setOpacityDelegate(opacity As Double)
     Private Sub setOpacity(opacity As Double)

@@ -72,7 +72,7 @@ Public Class window
                             playAlarmSound("C:\Windows\Media\notify.wav")
                         End If
 
-                        showTrayIconAlert(alarm.getName(), alarm.getText(), alarm.getTime(), 10000)
+                        showTrayIconAlert(alarm.getName(), alarm.getText(), alarm.getTime(), 10000, 200, 2000)
 
                         alarm.setBaloonVisible(True)
 
@@ -103,13 +103,13 @@ Public Class window
         End If
     End Sub
 
-    Private Delegate Sub showTrayIconAlertDelegate(title As String, text As String, time As Time, timeOut As Integer)
-    Private Sub showTrayIconAlert(title As String, text As String, time As Time, timeOut As Integer)
+    Private Delegate Sub showTrayIconAlertDelegate(title As String, text As String, time As Time, timeOut As Integer, fadeIn As Integer, fadeOut As Integer)
+    Private Sub showTrayIconAlert(title As String, text As String, time As Time, timeOut As Integer, fadeIn As Integer, fadeOut As Integer)
         If Me.InvokeRequired Then
             Dim del As New showTrayIconAlertDelegate(AddressOf showTrayIconAlert)
-            Me.Invoke(del, New Object() {title, text, time, timeOut})
+            Me.Invoke(del, New Object() {title, text, time, timeOut, fadeIn, fadeOut})
         Else
-            Dim alertWindow As New AlertWindow(title, text, time, timeOut)
+            Dim alertWindow As New AlertWindow(title, text, time, timeOut, fadeIn, fadeOut)
         End If
     End Sub
 

@@ -20,7 +20,7 @@ Public Class AlertWindow
         Me.Show()
 
         tbText.DeselectAll()
-        lblName.Focus()
+        Me.ActiveControl = Nothing
 
         runnerThread = New Thread(Sub() Me.runner(timeOut, fadeIn, fadeOut))
         runnerThread.Start()
@@ -87,4 +87,10 @@ Public Class AlertWindow
             Me.Close()
         End If
     End Sub
+
+    Protected Overrides ReadOnly Property ShowWithoutActivation As Boolean
+        Get
+            Return True
+        End Get
+    End Property
 End Class
